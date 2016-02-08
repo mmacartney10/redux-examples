@@ -13,10 +13,23 @@ const Fieldset = React.createClass({
   },
 
   updateStore: function (event) {
+    var currentId = listId++
+
     store.dispatch({
       type: 'ADD_TODO',
       text: this.state.value,
-      id: listId++
+      info: {
+        name: 'this is item number ' + currentId,
+        text: 'this is some text ' + this.state.value,
+        parentId: currentId
+      },
+      idInUse: currentId,
+      id: currentId
+    })
+
+    store.dispatch({
+      type: 'SHOW_ITEM',
+      idInUse: currentId
     })
 
     console.log(store.getState())
@@ -27,8 +40,8 @@ const Fieldset = React.createClass({
   render: function () {
     return (
     <fieldset>
-        <input type='text' name='input' value={this.state.value} onChange={this.handleChange}/>
-        <button type='button' onClick={this.updateStore}>Click</button>
+        <input type='text' className='side-bar__input' name='input' value={this.state.value} onChange={this.handleChange}/>
+        <button type='button' className='side-bar__btn' onClick={this.updateStore}>Click</button>
       </fieldset>
     )
   }
